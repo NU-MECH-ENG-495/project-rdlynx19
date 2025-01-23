@@ -1,5 +1,5 @@
 # Project Description
-Title: Swarm Algorithms Implementation on CrazyFlie Drones
+Title: Swarm Algorithms Implementation on CrazyFlie Drones \
 Author: Pushkar Dave
 
 The aim of the project is to implement the set of popular swarm algorithms in C++, and then deploy them on a set of [CrazyFlie](https://www.bitcraze.io/products/old-products/crazyflie-2-1/) drones.
