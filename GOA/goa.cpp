@@ -1,53 +1,132 @@
-#include <stdio.h>
-#include <vector>
+#include "ObjectiveFunction.hpp"
+#include <chrono>
+#include <iostream>
+#include <iomanip>
+#include <cmath>
 #include <random>
-
-#define xDimLB 0.0f
-#define xDimUB 1.0f
-#define yDimLB 0.0f
-#define yDimUB 1.0f
-#define zDimLB 0.0f
-#define zDimUB 1.0f
-#define quatLB -1.0f
-#define quatUB 1.0f
+#include <fstream>
 
 struct Grasshopper
 {
-    std::vector<std::pair<std::tuple<float>, std::tuple<float>>> position;
-    int ID;
+    double position[DIMENSIONS];
 };
 
-std::vector<Grasshopper> initGrasshopper(int numGrasshopper = 4)
+void updateBestFitness(Grasshopper &g, double *globalBestPosition, double &globalBestFitness)
 {
-    std::vector<Grasshopper> uavs;
-    for (int i = 0; i < numGrasshopper; i++)
+    double fitness = objectiveFunction(g.position);
+    if (fitness < globalBestFitness)
     {
-        Grasshopper uav;
-
-        std::random_device rd;                                         // Seed for the random number engine
-        std::mt19937 gen(rd());                                        // Mersenne Twister engine
-        std::uniform_real_distribution<float> xdis(xDimLB, xDimUB);    // Uniform distribution for x between 0.0 and 1.0
-        std::uniform_real_distribution<float> ydis(yDimLB, yDimUB);    // Uniform distribution for y between 0.0 and 1.0
-        std::uniform_real_distribution<float> zdis(zDimLB, zDimUB);    // Uniform distribution for z between 0.0 and 1.0
-        std::uniform_real_distribution<float> quatdis(quatLB, quatUB); // Uniform distribution for quaternion between -1.0 and 1.0
-        // Generate random floats
-        float x = xdis(gen);
-        float y = ydis(gen);
-        float z = zdis(gen);
-        float qx = quatdis(gen);
-        float qy = quatdis(gen);
-        float qz = quatdis(gen);
-        float qw = quatdis(gen);
-        uav.position.emplace_back(std::make_pair(std::make_tuple(x, y, z), std::make_tuple(qx, qy, qz, qw)));
-        uav.ID = i;
-        uavs.push_back(uav);
+        globalBestFitness = fitness;
+        for (int i = 0; i < DIMENSIONS; i++)
+        {
+            globalBestPosition[i] = g.position[i];
+        }
     }
-    return uavs;
 }
 
-int main(int argc, char *argv[])
+void initializeGrasshoppers(std::vector<Grasshopper> &grasshoppers, double *globalBestPosition, double &globalBestFitness)
 {
-    std::vector<Grasshopper> uavs;
-    uavs = initGrasshopper();
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(-5.0, 5.0);
+
+    for (int i = 0; i < NUM_GRASSHOPPERS; i++)
+    {
+        Grasshopper &g = grasshoppers[i];
+        for (int j = 0; j < DIMENSIONS; j++)
+        {
+            g.position[j] = dis(gen);
+        }
+        updateBestFitness(g, globalBestPosition, globalBestFitness);
+    }
+}
+
+void updateGrasshoppers(std::vector<Grasshopper> &grasshoppers, double *globalBestPosition, double &globalBestFitness, int iter)
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(0.0, 1.0);
+
+    double c = 0.00001;
+    double cMax = 1.0;
+    double cMin = 0.00001;
+    double l = (cMax - cMin) * (MAX_ITERATIONS - iter) / MAX_ITERATIONS + cMin;
+
+    for (int i = 0; i < NUM_GRASSHOPPERS; i++)
+    {
+        Grasshopper &g = grasshoppers[i];
+        for (int d = 0; d < DIMENSIONS; d++)
+        {
+            double socialInteraction = 0.0;
+            for (int j = 0; j < NUM_GRASSHOPPERS; j++)
+            {
+                if (j != i)
+                {
+                    double distance = fabs(g.position[d] - grasshoppers[j].position[d]);
+                    double r = dis(gen);
+                    double si = (0.5 + 0.5 * r) * (globalBestPosition[d] - l * distance);
+                    socialInteraction += si;
+                }
+            }
+            double xi = c * socialInteraction;
+            double r = dis(gen);
+            double levy = pow(r, -1.0 / LEVY_EXPONENT);
+            double newPosition = g.position[d] + xi * levy;
+            g.position[d] = fmax(LOWER_BOUND, fmin(newPosition, UPPER_BOUND));
+        }
+        updateBestFitness(g, globalBestPosition, globalBestFitness);
+    }
+}
+
+void runGOA(std::vector<Grasshopper> &grasshoppers, double *globalBestPosition, double &globalBestFitness)
+{
+    std::ofstream outputFile("results.txt");
+    for (int iter = 0; iter < MAX_ITERATIONS; iter++)
+    {
+        updateGrasshoppers(grasshoppers, globalBestPosition, globalBestFitness, iter);
+        outputFile << iter + 1 << ": " << globalBestFitness << std::endl;
+    }
+    outputFile.close();
+}
+
+void printResults(double *globalBestPosition, double globalBestFitness, double executionTime)
+{
+    std::cout << std::fixed << std::setprecision(10);
+    if (DIMENSIONS == 1)
+    {
+        std::cout << "Global Best Position: " << globalBestPosition[0] << std::endl;
+    }
+    else
+    {
+        std::cout << "Global Best Position: (";
+        for (int i = 0; i < DIMENSIONS; i++)
+        {
+            std::cout << globalBestPosition[i];
+            if (i < DIMENSIONS - 1)
+            {
+                std::cout << ", ";
+            }
+        }
+        std::cout << ")" << std::endl;
+    }
+    std::cout << "Global Best Value: " << globalBestFitness << std::endl;
+    std::cout << std::fixed << std::setprecision(2);
+    std::cout << "Execution Time: " << executionTime << " milliseconds" << std::endl;
+}
+
+int main()
+{
+    std::vector<Grasshopper> grasshoppers(NUM_GRASSHOPPERS);
+    double globalBestPosition[DIMENSIONS];
+    double globalBestFitness = INFINITY;
+
+    auto start = std::chrono::high_resolution_clock::now();
+    initializeGrasshoppers(grasshoppers, globalBestPosition, globalBestFitness);
+    runGOA(grasshoppers, globalBestPosition, globalBestFitness);
+    auto end = std::chrono::high_resolution_clock::now();
+    double executionTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+    printResults(globalBestPosition, globalBestFitness, executionTime);
+
     return 0;
 }

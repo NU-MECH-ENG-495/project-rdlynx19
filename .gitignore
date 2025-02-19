@@ -1,0 +1,18 @@
+# Ignore compiled executables
+*.exe
+goa
+
+# Ignore build directories
+bin/
+build/
+
+# Ignore object files and libraries
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+
+# Ignore other build artifacts
+*.out
+*.log
