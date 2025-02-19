@@ -12,6 +12,8 @@ build/
 *.so
 *.dylib
 *.dll
+*.csv
+*.txt
 
 # Ignore other build artifacts
 *.out

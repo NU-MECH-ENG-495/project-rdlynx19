@@ -80,12 +80,31 @@ void updateGrasshoppers(std::vector<Grasshopper> &grasshoppers, double *globalBe
 
 void runGOA(std::vector<Grasshopper> &grasshoppers, double *globalBestPosition, double &globalBestFitness)
 {
-    std::ofstream outputFile("results.txt");
+    std::ofstream outputFile("results.csv");
+    outputFile << "Iteration,GlobalBestFitness"; // Write CSV header
+
+    // Add headers for grasshopper positions
+    for (int i = 0; i < NUM_GRASSHOPPERS; i++)
+    {
+        outputFile << ",Grasshopper" << i + 1 << "_X,Grasshopper" << i + 1 << "_Y";
+    }
+    outputFile << "\n";
+
     for (int iter = 0; iter < MAX_ITERATIONS; iter++)
     {
         updateGrasshoppers(grasshoppers, globalBestPosition, globalBestFitness, iter);
-        outputFile << iter + 1 << ": " << globalBestFitness << std::endl;
+
+        // Write iteration and global best fitness
+        outputFile << iter + 1 << "," << globalBestFitness;
+
+        // Write positions of all grasshoppers
+        for (int i = 0; i < NUM_GRASSHOPPERS; i++)
+        {
+            outputFile << "," << grasshoppers[i].position[0] << "," << grasshoppers[i].position[1];
+        }
+        outputFile << "\n";
     }
+
     outputFile.close();
 }
 

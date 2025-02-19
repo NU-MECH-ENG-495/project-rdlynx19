@@ -3,8 +3,8 @@
 
 #include <cmath>
 
-#define NUM_GRASSHOPPERS 1024
-#define MAX_ITERATIONS 1000
+#define NUM_GRASSHOPPERS 100
+#define MAX_ITERATIONS 10000
 #define LEVY_EXPONENT 1.5
 #define LOWER_BOUND -5.12
 #define UPPER_BOUND 5.12
