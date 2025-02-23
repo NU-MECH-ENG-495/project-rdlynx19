@@ -5,7 +5,7 @@
 #include <vector>
 
 constexpr int NUM_PARTICLES = 4;
-constexpr int MAX_ITERATIONS = 1000;
+constexpr int MAX_ITERATIONS = 20;
 constexpr double COGNITIVE_WEIGHT = 1.49; // Cognitive weight (c1) in the velocity update equation
 constexpr double SOCIAL_WEIGHT = 1.49;    // Social weight (c2) in the velocity update equation
 constexpr double INERTIA_WEIGHT = 0.729;  // Inertia weight (w) in the velocity update equation
