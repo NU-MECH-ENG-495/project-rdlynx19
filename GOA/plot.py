@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 # File path to the CSV file
-csv_file = "results.csv"
+csv_file = "/home/gis/Documents/AdvancedCpp/project/project-rdlynx19/GOA/results.csv"
 
 # Lists to store data
 iterations = []
@@ -73,7 +73,7 @@ ani = animation.FuncAnimation(
     fig,
     animate,
     frames=len(iterations),
-    interval=0.5,  # Delay between frames in milliseconds
+    interval=50.5,  # Delay between frames in milliseconds
     repeat=False,
 )
 
