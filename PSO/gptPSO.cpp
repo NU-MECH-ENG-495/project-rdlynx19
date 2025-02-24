@@ -31,7 +31,7 @@ void updateBestFitness(Particle& p, std::vector<double>& globalBestPosition, dou
 void initializeParticles(std::vector<Particle>& particles, std::vector<double>& globalBestPosition, double& globalBestFitness) {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dis(-5.0, 5.0);
+    std::uniform_real_distribution<> dis(-2.0, 2.0);
     std::uniform_real_distribution<> disVel(-1.0, 1.0);
 
     for (auto& p : particles) {
