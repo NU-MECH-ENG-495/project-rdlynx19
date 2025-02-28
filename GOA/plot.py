@@ -50,8 +50,8 @@ ax.legend()
 # Animation function
 def animate(frame):
     ax.clear()  # Clear the previous frame
-    ax.set_xlim(min(min(pos["x"]) for pos in grasshopper_positions) - 1, max(max(pos["x"]) for pos in grasshopper_positions) + 1)
-    ax.set_ylim(min(min(pos["y"]) for pos in grasshopper_positions) - 1, max(max(pos["y"]) for pos in grasshopper_positions) + 1)
+    ax.set_xlim(min(min(pos["x"]) for pos in grasshopper_positions) - 0.5, max(max(pos["x"]) for pos in grasshopper_positions) + 0.5)
+    ax.set_ylim(min(min(pos["y"]) for pos in grasshopper_positions) - 0.5, max(max(pos["y"]) for pos in grasshopper_positions) + 0.5)
     ax.set_title(f"Iteration {frame + 1}")
     ax.set_xlabel("X Position")
     ax.set_ylabel("Y Position")
@@ -73,7 +73,7 @@ ani = animation.FuncAnimation(
     fig,
     animate,
     frames=len(iterations),
-    interval=50.5,  # Delay between frames in milliseconds
+    interval=0.5,  # Delay between frames in milliseconds
     repeat=False,
 )
 

@@ -28,7 +28,7 @@ void initializeGrasshoppers(std::vector<Grasshopper> &grasshoppers, double *glob
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dis(-5.0, 5.0);
+    std::uniform_real_distribution<> dis(-1.0, 1.0);
 
     for (int i = 0; i < NUM_GRASSHOPPERS; i++)
     {
