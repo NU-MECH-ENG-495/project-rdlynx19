@@ -102,19 +102,19 @@ void writeWaypointsToCSV(const std::vector<std::vector<Point>> &paths, const std
 int main()
 {
     // Define the rectangular area and subregions
-    double area_width = 100.0;
-    double area_height = 100.0;
-    double search_radius = 5.0;
-    double z = 10.0;        // Fixed altitude for all drones
-    double step_size = 2.5; // Distance between intermediate points
+    double area_width = 10.0;
+    double area_height = 10.0;
+    double search_radius = 1.0;
+    double z = 2.0;         // Fixed altitude for all drones
+    double step_size = 0.5; // Distance between intermediate points
 
     // Adjust subregion boundaries to ensure overlap
     double overlap_margin = search_radius / 2; // Overlap by half the search radius
     std::vector<std::vector<double>> subregions = {
-        {0.0, 50.0 + overlap_margin, 0.0, 50.0 + overlap_margin},    // Q1
-        {50.0 - overlap_margin, 100.0, 0.0, 50.0 + overlap_margin},  // Q2
-        {0.0, 50.0 + overlap_margin, 50.0 - overlap_margin, 100.0},  // Q3
-        {50.0 - overlap_margin, 100.0, 50.0 - overlap_margin, 100.0} // Q4
+        {0.0, (area_width / 2.0) + overlap_margin, 0.0, (area_height / 2.0) + overlap_margin},               // Q1
+        {(area_width / 2.0) - overlap_margin, area_width, 0.0, (area_height / 2.0) + overlap_margin},        // Q2
+        {0.0, (area_width / 2.0) + overlap_margin, (area_height / 2.0) - overlap_margin, area_height},       // Q3
+        {(area_width / 2.0) - overlap_margin, area_width, (area_height / 2.0) - overlap_margin, area_height} // Q4
     };
 
     // Generate paths for each drone

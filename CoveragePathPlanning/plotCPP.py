@@ -4,8 +4,8 @@ from matplotlib.patches import Circle
 import numpy as np
 
 # Parameters
-search_radius = 5.0  # Search radius of the drones
-drone_point_size = 10  # Size of the point representing the drone
+search_radius = 1.0  # Search radius of the drones
+drone_point_size = 1  # Size of the point representing the drone
 frame_delay = 0.01  # Delay between frames (for animation)
 
 # Read the CSV file
