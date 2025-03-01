@@ -106,15 +106,15 @@ int main()
     double area_height = 100.0;
     double search_radius = 5.0;
     double z = 10.0;        // Fixed altitude for all drones
-    double step_size = 1.0; // Distance between intermediate points
+    double step_size = 2.5; // Distance between intermediate points
 
-    // Adjust subregion boundaries to avoid overlapping
-    double overlap_margin = search_radius;
+    // Adjust subregion boundaries to ensure overlap
+    double overlap_margin = search_radius / 2; // Overlap by half the search radius
     std::vector<std::vector<double>> subregions = {
-        {0.0, 50.0 - overlap_margin, 0.0, 50.0 - overlap_margin},    // Q1
-        {50.0 + overlap_margin, 100.0, 0.0, 50.0 - overlap_margin},  // Q2
-        {0.0, 50.0 - overlap_margin, 50.0 + overlap_margin, 100.0},  // Q3
-        {50.0 + overlap_margin, 100.0, 50.0 + overlap_margin, 100.0} // Q4
+        {0.0, 50.0 + overlap_margin, 0.0, 50.0 + overlap_margin},    // Q1
+        {50.0 - overlap_margin, 100.0, 0.0, 50.0 + overlap_margin},  // Q2
+        {0.0, 50.0 + overlap_margin, 50.0 - overlap_margin, 100.0},  // Q3
+        {50.0 - overlap_margin, 100.0, 50.0 - overlap_margin, 100.0} // Q4
     };
 
     // Generate paths for each drone

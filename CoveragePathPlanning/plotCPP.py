@@ -61,7 +61,7 @@ for frame in range(max_frames):
     update_plot(frame)
 
 # Add legend
-ax.legend([f"Drone {i}" for i in range(len(drone_paths))])
+# ax.legend([f"Drone {i}" for i in range(len(drone_paths))])
 
 # Show the plot
 plt.show()
