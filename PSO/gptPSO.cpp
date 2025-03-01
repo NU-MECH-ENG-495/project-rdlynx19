@@ -31,7 +31,8 @@ void updateBestFitness(Particle& p, std::vector<double>& globalBestPosition, dou
 void initializeParticles(std::vector<Particle>& particles, std::vector<double>& globalBestPosition, double& globalBestFitness) {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dis(-2.0, 2.0);
+    std::uniform_real_distribution<> disXY(-2.0, 2.0);
+    std::uniform_real_distribution<> disZ(0.05, 5.0);
     std::uniform_real_distribution<> disVel(-1.0, 1.0);
 
     for (auto& p : particles) {
@@ -40,7 +41,12 @@ void initializeParticles(std::vector<Particle>& particles, std::vector<double>& 
         p.bestPosition.resize(DIMENSIONS);
 
         for (int i = 0; i < DIMENSIONS; i++) {
-            p.position[i] = dis(gen);
+            if (i == DIMENSIONS - 1){
+                p.position[i] = disZ(gen);
+            }
+            else{
+                p.position[i] = disZ(gen);
+            }
             p.velocity[i] = disVel(gen);
             p.bestPosition[i] = p.position[i];
         }
@@ -65,6 +71,9 @@ void updateParticles(std::vector<Particle>& particles, std::vector<double>& glob
                             SOCIAL_WEIGHT * r2 * (globalBestPosition[i] - p.position[i]);
 
             p.position[i] += p.velocity[i];
+            if(p.position[DIMENSIONS - 1] < 0.0){
+                p.position[DIMENSIONS - 1] = 0.05;
+            }
         }
 
         updateBestFitness(p, globalBestPosition, globalBestFitness);
