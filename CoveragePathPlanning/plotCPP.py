@@ -6,6 +6,7 @@ import numpy as np
 # Parameters
 search_radius = 5.0  # Search radius of the drones
 drone_point_size = 10  # Size of the point representing the drone
+frame_delay = 0.01  # Delay between frames (for animation)
 
 # Read the CSV file
 waypoints = []
@@ -31,34 +32,37 @@ fig, ax = plt.subplots()
 ax.set_xlabel("X")
 ax.set_ylabel("Y")
 ax.set_title("Drone Search Paths with Coverage")
+ax.set_aspect('equal')
+ax.grid(True)
 
 # Define colors for each drone
 colors = ['r', 'g', 'b', 'm']  # Red, Green, Blue, Magenta
 
-# Plot paths and coverage for each drone
+# Initialize drone positions and coverage
+drone_positions = {}
+coverage_patches = {}
 for drone_id, path in drone_paths.items():
-    color = colors[drone_id % len(colors)]  # Assign a color to the drone
-    x_coords, y_coords = zip(*path)  # Unzip the path into x and y coordinates
+    drone_positions[drone_id] = path[0]  # Start at the first waypoint
+    coverage_patches[drone_id] = Circle(path[0], search_radius, color=colors[drone_id], alpha=0.1)
+    ax.add_patch(coverage_patches[drone_id])
 
-    # Plot the path
-    ax.plot(x_coords, y_coords, color=color, linestyle='-', linewidth=1, label=f"Drone {drone_id}")
+# Function to update the plot
+def update_plot(frame):
+    for drone_id, path in drone_paths.items():
+        if frame < len(path):
+            x, y = path[frame]
+            drone_positions[drone_id] = (x, y)
+            coverage_patches[drone_id].center = (x, y)
+            ax.scatter(x, y, color=colors[drone_id], s=drone_point_size)
+    plt.pause(frame_delay)
 
-    # Plot the coverage (circles) and drone positions (points)
-    for i, (x, y) in enumerate(path):
-        # Draw the search radius circle
-        circle = Circle((x, y), search_radius, color=color, alpha=0.1)
-        ax.add_patch(circle)
+# Animate the plot
+max_frames = max(len(path) for path in drone_paths.values())
+for frame in range(max_frames):
+    update_plot(frame)
 
-        # Draw the drone position (smaller point)
-        ax.scatter(x, y, color=color, s=drone_point_size)
-
-        # Update the plot dynamically (optional, for animation effect)
-        plt.pause(1)  # Pause to visualize the movement
-
-# Add legend and grid
-ax.legend()
-ax.grid(True)
-ax.set_aspect('equal', adjustable='box')
+# Add legend
+ax.legend([f"Drone {i}" for i in range(len(drone_paths))])
 
 # Show the plot
 plt.show()
