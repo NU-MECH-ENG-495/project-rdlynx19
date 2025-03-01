@@ -1,5 +1,5 @@
 CXX = g++
-SOURCES = gptPSO.cpp
+SOURCES = deepSeekSearch.cpp
 OBJECTS = pso.o
 EXECUTABLE = pso
 
@@ -13,7 +13,7 @@ CXXFLAGS = -std=c++17 -O3
 $(EXECUTABLE): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-pso.o: gptPSO.cpp
+pso.o: deepSeekSearch.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
