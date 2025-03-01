@@ -57,6 +57,16 @@ std::vector<Point> generateBackAndForthPath(double x_min, double x_max, double y
             auto intermediate = generateIntermediatePoints(start, end, step_size);
             path.insert(path.end(), intermediate.begin(), intermediate.end());
         }
+
+        // Move to the next row (smooth transition)
+        if (y + spacing <= y_max)
+        {
+            Point start = {path.back().x, y, z};
+            Point end = {path.back().x, y + spacing, z};
+            auto intermediate = generateIntermediatePoints(start, end, step_size);
+            path.insert(path.end(), intermediate.begin(), intermediate.end());
+        }
+
         y += spacing;
     }
 

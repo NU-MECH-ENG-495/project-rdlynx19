@@ -38,13 +38,9 @@ ax.grid(True)
 # Define colors for each drone
 colors = ['r', 'g', 'b', 'm']  # Red, Green, Blue, Magenta
 
-# Initialize drone positions and coverage
+# Initialize drone positions and coverage trails
 drone_positions = {}
-coverage_patches = {}
-for drone_id, path in drone_paths.items():
-    drone_positions[drone_id] = path[0]  # Start at the first waypoint
-    coverage_patches[drone_id] = Circle(path[0], search_radius, color=colors[drone_id], alpha=0.1)
-    ax.add_patch(coverage_patches[drone_id])
+coverage_trails = {drone_id: [] for drone_id in drone_paths.keys()}
 
 # Function to update the plot
 def update_plot(frame):
@@ -52,7 +48,10 @@ def update_plot(frame):
         if frame < len(path):
             x, y = path[frame]
             drone_positions[drone_id] = (x, y)
-            coverage_patches[drone_id].center = (x, y)
+            # Add the current search radius to the coverage trail
+            coverage_trails[drone_id].append(Circle((x, y), search_radius, color=colors[drone_id], alpha=0.1))
+            ax.add_patch(coverage_trails[drone_id][-1])
+            # Plot the drone position
             ax.scatter(x, y, color=colors[drone_id], s=drone_point_size)
     plt.pause(frame_delay)
 
