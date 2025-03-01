@@ -1,4 +1,4 @@
-#include "ObjectiveFunction.hpp"
+#include "rewardBasedObjectiveFunction.hpp"
 #include <chrono>
 #include <iostream>
 #include <iomanip>
@@ -18,9 +18,6 @@ constexpr double SPACE_Z_MAX = 10.0;  // Reduced search space size
 
 // Search radius for collision avoidance
 constexpr double SEARCH_RADIUS = 1.0;  // Drones cannot come closer than this distance
-
-// Reward for visiting a new cell
-constexpr double NEW_CELL_REWARD = 0.1;  // Reward for visiting a new cell
 
 // Structure to represent a drone (particle)
 struct Particle {
