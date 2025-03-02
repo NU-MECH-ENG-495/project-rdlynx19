@@ -33,7 +33,7 @@ std::vector<Point> generateIntermediatePoints(Point start, Point end, double ste
 }
 
 // Function to generate a back-and-forth path for a subregion
-std::vector<Point> generateBackAndForthPath(double x_min, double x_max, double y_min, double y_max, double z, double search_radius, double step_size)
+std::vector<Point> generateBackAndForthPath(double x_min, double x_max, double y_min, double y_max, double z, double search_radius, double step_size, bool generate_intermediate_points)
 {
     std::vector<Point> path;
     double spacing = 2 * search_radius;
@@ -46,16 +46,32 @@ std::vector<Point> generateBackAndForthPath(double x_min, double x_max, double y
             // Move right
             Point start = {x_min, y, z};
             Point end = {x_max, y, z};
-            auto intermediate = generateIntermediatePoints(start, end, step_size);
-            path.insert(path.end(), intermediate.begin(), intermediate.end());
+            if (generate_intermediate_points)
+            {
+                auto intermediate = generateIntermediatePoints(start, end, step_size);
+                path.insert(path.end(), intermediate.begin(), intermediate.end());
+            }
+            else
+            {
+                path.push_back(start);
+                path.push_back(end);
+            }
         }
         else
         {
             // Move left
             Point start = {x_max, y, z};
             Point end = {x_min, y, z};
-            auto intermediate = generateIntermediatePoints(start, end, step_size);
-            path.insert(path.end(), intermediate.begin(), intermediate.end());
+            if (generate_intermediate_points)
+            {
+                auto intermediate = generateIntermediatePoints(start, end, step_size);
+                path.insert(path.end(), intermediate.begin(), intermediate.end());
+            }
+            else
+            {
+                path.push_back(start);
+                path.push_back(end);
+            }
         }
 
         // Move to the next row (smooth transition)
@@ -63,8 +79,16 @@ std::vector<Point> generateBackAndForthPath(double x_min, double x_max, double y
         {
             Point start = {path.back().x, y, z};
             Point end = {path.back().x, y + spacing, z};
-            auto intermediate = generateIntermediatePoints(start, end, step_size);
-            path.insert(path.end(), intermediate.begin(), intermediate.end());
+            if (generate_intermediate_points)
+            {
+                auto intermediate = generateIntermediatePoints(start, end, step_size);
+                path.insert(path.end(), intermediate.begin(), intermediate.end());
+            }
+            else
+            {
+                path.push_back(start);
+                path.push_back(end);
+            }
         }
 
         y += spacing;
@@ -107,6 +131,7 @@ int main()
     double search_radius = 1.0;
     double z = 2.0;         // Fixed altitude for all drones
     double step_size = 0.5; // Distance between intermediate points
+    bool generate_intermediate_points = false;
 
     // Adjust subregion boundaries to ensure overlap
     double overlap_margin = search_radius / 2; // Overlap by half the search radius
@@ -125,7 +150,7 @@ int main()
         double x_max = subregion[1];
         double y_min = subregion[2];
         double y_max = subregion[3];
-        paths.push_back(generateBackAndForthPath(x_min, x_max, y_min, y_max, z, search_radius, step_size));
+        paths.push_back(generateBackAndForthPath(x_min, x_max, y_min, y_max, z, search_radius, step_size, generate_intermediate_points));
     }
 
     // Write waypoints to CSV
