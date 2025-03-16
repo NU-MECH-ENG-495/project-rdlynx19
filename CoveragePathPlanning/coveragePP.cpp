@@ -126,9 +126,9 @@ void writeWaypointsToCSV(const std::vector<std::vector<Point>> &paths, const std
 int main()
 {
     // Define the rectangular area and subregions
-    double area_width = 10.0;
-    double area_height = 10.0;
-    double search_radius = 1.0;
+    double area_width = 5.0;
+    double area_height = 5.0;
+    double search_radius = 0.5;
     double z = 2.0;         // Fixed altitude for all drones
     double step_size = 0.5; // Distance between intermediate points
     bool generate_intermediate_points = false;
