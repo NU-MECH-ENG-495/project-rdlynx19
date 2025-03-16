@@ -8,7 +8,7 @@ constexpr int MAX_ITERATIONS = 100;
 constexpr double COGNITIVE_WEIGHT = 1.49;
 constexpr double SOCIAL_WEIGHT = 1.49;
 constexpr double INERTIA_WEIGHT = 0.729;
-constexpr int NUM_CITIES = 20;
+constexpr int NUM_CITIES = 40;
 
 const std::vector<std::vector<double>> distances = {
     {0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190},
