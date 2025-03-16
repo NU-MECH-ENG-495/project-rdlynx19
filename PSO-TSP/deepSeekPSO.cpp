@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <random>
 #include <fstream>
-#include <cmath>
+#include <cmath> 
 
 struct Particle {
     std::vector<int> position;
