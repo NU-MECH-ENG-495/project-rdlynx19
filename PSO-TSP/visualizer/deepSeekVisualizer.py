@@ -5,12 +5,12 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.animation as animation
 
 # Load city data
-cities = pd.read_csv("city_coordinates.csv")
+cities = pd.read_csv("../csv/city_coordinates.csv")
 city_coords = cities[['X', 'Y', 'Z']].values
 num_cities = len(city_coords)
 
 # Load PSO iteration data
-pso_data = pd.read_csv("particle_data.csv")
+pso_data = pd.read_csv("../csv/particle_data.csv")
 
 # Extract unique iterations
 iterations = pso_data["Iteration"].unique()

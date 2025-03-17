@@ -199,7 +199,7 @@ void printResults(const std::vector<int> &globalBestPosition, double globalBestF
 void saveBestRouteCoordinates(const std::vector<int> &bestRoute,
                               const std::vector<std::tuple<double, double, double>> &cityCoordinates)
 {
-    std::ofstream routeFile("best_route_coordinates.csv");
+    std::ofstream routeFile("../csv/best_route_coordinates.csv");
 
     // Write header
     routeFile << "Order,CityID,X,Y,Z\n";
@@ -231,7 +231,7 @@ void saveBestRouteCoordinates(const std::vector<int> &bestRoute,
 void saveRouteCoordinatesXYZ(const std::vector<int> &bestRoute,
                              const std::vector<std::tuple<double, double, double>> &cityCoordinates)
 {
-    std::ofstream xyzFile("best_route_xyz.csv");
+    std::ofstream xyzFile("../csv/best_route_xyz.csv");
 
     // No header, just X,Y,Z values
 
@@ -267,7 +267,7 @@ int main()
     std::vector<std::vector<double>> distances = initializeDistanceMatrix(cityCoordinates);
 
     // Log city coordinates to a separate CSV file
-    std::ofstream coordFile("city_coordinates.csv");
+    std::ofstream coordFile("../csv/city_coordinates.csv");
     coordFile << "City,X,Y,Z\n";
     for (int i = 0; i < NUM_CITIES; i++)
     {
@@ -276,7 +276,7 @@ int main()
     coordFile.close();
 
     // Open CSV file for logging particle data
-    std::ofstream outFile("particle_data.csv");
+    std::ofstream outFile("../csv/particle_data.csv");
     outFile << "Iteration,ParticleID";
     for (int i = 0; i < NUM_CITIES; i++)
     {
