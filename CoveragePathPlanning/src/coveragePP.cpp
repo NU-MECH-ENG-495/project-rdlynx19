@@ -1,16 +1,7 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <cmath>
-
-// Define a structure for a 3D point
-struct Point
-{
-    double x, y, z;
-};
+#include <coveragePP.h>
 
 // Function to generate intermediate points between two waypoints
-std::vector<Point> generateIntermediatePoints(Point start, Point end, double step_size)
+std::vector<Point> CoveragePathPlanner::generateIntermediatePoints(Point start, Point end, double step_size)
 {
     std::vector<Point> points;
     double dx = end.x - start.x;
@@ -33,7 +24,7 @@ std::vector<Point> generateIntermediatePoints(Point start, Point end, double ste
 }
 
 // Function to generate a back-and-forth path for a subregion
-std::vector<Point> generateBackAndForthPath(double x_min, double x_max, double y_min, double y_max, double z, double search_radius, double step_size, bool generate_intermediate_points)
+std::vector<Point> CoveragePathPlanner::generateBackAndForthPath(double x_min, double x_max, double y_min, double y_max, double z, double search_radius, double step_size, bool generate_intermediate_points)
 {
     std::vector<Point> path;
     double spacing = 2 * search_radius;
@@ -98,7 +89,7 @@ std::vector<Point> generateBackAndForthPath(double x_min, double x_max, double y
 }
 
 // Function to write waypoints to a CSV file
-void writeWaypointsToCSV(const std::vector<std::vector<Point>> &paths, const std::string &filename)
+void CoveragePathPlanner::writeWaypointsToCSV(const std::vector<std::vector<Point>> &paths, const std::string &filename)
 {
     std::ofstream file(filename);
     if (!file.is_open())
@@ -121,40 +112,4 @@ void writeWaypointsToCSV(const std::vector<std::vector<Point>> &paths, const std
 
     file.close();
     std::cout << "Waypoints written to " << filename << std::endl;
-}
-
-int main()
-{
-    // Define the rectangular area and subregions
-    double area_width = 5.0;
-    double area_height = 5.0;
-    double search_radius = 0.5;
-    double z = 2.0;         // Fixed altitude for all drones
-    double step_size = 0.5; // Distance between intermediate points
-    bool generate_intermediate_points = false;
-
-    // Adjust subregion boundaries to ensure overlap
-    double overlap_margin = search_radius / 2; // Overlap by half the search radius
-    std::vector<std::vector<double>> subregions = {
-        {0.0, (area_width / 2.0) + overlap_margin, 0.0, (area_height / 2.0) + overlap_margin},               // Q1
-        {(area_width / 2.0) - overlap_margin, area_width, 0.0, (area_height / 2.0) + overlap_margin},        // Q2
-        {0.0, (area_width / 2.0) + overlap_margin, (area_height / 2.0) - overlap_margin, area_height},       // Q3
-        {(area_width / 2.0) - overlap_margin, area_width, (area_height / 2.0) - overlap_margin, area_height} // Q4
-    };
-
-    // Generate paths for each drone
-    std::vector<std::vector<Point>> paths;
-    for (const auto &subregion : subregions)
-    {
-        double x_min = subregion[0];
-        double x_max = subregion[1];
-        double y_min = subregion[2];
-        double y_max = subregion[3];
-        paths.push_back(generateBackAndForthPath(x_min, x_max, y_min, y_max, z, search_radius, step_size, generate_intermediate_points));
-    }
-
-    // Write waypoints to CSV
-    writeWaypointsToCSV(paths, "drone_waypoints.csv");
-
-    return 0;
 }
