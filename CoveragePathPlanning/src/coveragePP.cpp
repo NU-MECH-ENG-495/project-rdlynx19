@@ -3,6 +3,10 @@
 // Function to generate intermediate points between two waypoints
 std::vector<Point> CoveragePathPlanner::generateIntermediatePoints(Point start, Point end, double step_size)
 {
+    if (step_size == 0.0)
+    {
+        throw std::invalid_argument("Step size cannot be zero");
+    }
     std::vector<Point> points;
     double dx = end.x - start.x;
     double dy = end.y - start.y;
@@ -26,6 +30,14 @@ std::vector<Point> CoveragePathPlanner::generateIntermediatePoints(Point start, 
 // Function to generate a back-and-forth path for a subregion
 std::vector<Point> CoveragePathPlanner::generateBackAndForthPath(double x_min, double x_max, double y_min, double y_max, double z, double search_radius, double step_size, bool generate_intermediate_points)
 {
+    if (step_size == 0.0)
+    {
+        throw std::invalid_argument("Step size cannot be zero");
+    }
+    if (x_min >= x_max || y_min >= y_max)
+    {
+        throw std::invalid_argument("Invalid subregion boundaries");
+    }
     std::vector<Point> path;
     double spacing = 2 * search_radius;
     double y = y_min;
@@ -94,8 +106,7 @@ void CoveragePathPlanner::writeWaypointsToCSV(const std::vector<std::vector<Poin
     std::ofstream file(filename);
     if (!file.is_open())
     {
-        std::cerr << "Error: Could not open file " << filename << std::endl;
-        return;
+        throw std::runtime_error("Could not open file " + filename);
     }
 
     // Write CSV header
