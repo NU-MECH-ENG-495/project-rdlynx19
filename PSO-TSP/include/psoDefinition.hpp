@@ -3,6 +3,8 @@
 #include <vector>
 #include <memory>
 #include <limits>
+#include <mutex>
+#include <thread>
 #include "cityDefinition.hpp"
 #include "particleDefinition.hpp"
 #include "ObjectiveFunction.hpp"
@@ -14,6 +16,7 @@ class PSO {
         std::vector<std::vector<double>> distanceMatrix;
         std::vector<std::shared_ptr<Particle>> particleList;
         std::vector<std::shared_ptr<City>> cityList;
+        std::mutex globalMutex;
         
     public:
         PSO(){};
