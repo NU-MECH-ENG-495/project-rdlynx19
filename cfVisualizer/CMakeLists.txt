@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.8)
 project(cfVisualizer)
 
+# Find Doxygen library
+find_package(Doxygen REQUIRED)
+
 # Default to C++17
 set(CMAKE_CXX_STANDARD 17)
 
@@ -42,3 +45,12 @@ endif()
 
 # Export package
 ament_package()
+
+# Generate Doxygen documentation
+if(${DOXYGEN_FOUND})
+    doxygen_add_docs(doxygen 
+    ${PROJECT_SOURCE_DIR}/include/ 
+    ${PROJECT_SOURCE_DIR}/src/ 
+    ALL
+)
+endif()
