@@ -8,9 +8,22 @@
 #include <string>
 #include <vector>
 
+/**
+ * @class Trace
+ * @brief A ROS 2 node that traces the positions of Crazyflie drones and publishes them as visualization markers.
+ *
+ * This node listens to TF transforms for a set of Crazyflie drones, creates visualization markers for their positions,
+ * and publishes them as a MarkerArray message.
+ */
 class Trace : public rclcpp::Node
 {
 public:
+    /**
+     * @brief Constructor for the Trace node.
+     *
+     * Initializes the node, sets up the TF buffer and listener, creates a publisher for visualization markers,
+     * and starts a timer to periodically update the markers.
+     */
     Trace()
         : Node("trace_node"), tf_buffer_(this->get_clock()), tf_listener_(tf_buffer_)
     {
@@ -21,8 +34,15 @@ public:
     }
 
 private:
-    visualization_msgs::msg::MarkerArray marker_array;
-    int64_t markerCount = 0;
+    visualization_msgs::msg::MarkerArray marker_array; ///< Marker array to store the visualization markers.
+    int64_t markerCount = 0;                           ///< Counter to keep track of the number of markers created.
+
+    /**
+     * @brief Timer callback function.
+     *
+     * This function is called periodically by the timer. It looks up the TF transforms for each Crazyflie drone,
+     * creates a visualization marker for its position, and adds it to the marker array. The marker array is then published.
+     */
     void timer_callback()
     {
         std::vector<std::string> cf_names = {"cf231", "cf5", "cf7", "cf9"}; // Crazyflie Names
@@ -61,17 +81,25 @@ private:
             }
             catch (tf2::TransformException &ex)
             {
-                RCLCPP_ERROR(this->get_logger(), "Failde to lookup tf for %s, ex: %s", cf_names[i].c_str(), ex.what());
+                RCLCPP_ERROR(this->get_logger(), "Failed to lookup tf for %s, ex: %s", cf_names[i].c_str(), ex.what());
             }
         }
         marker_pub_->publish(marker_array);
     }
-    rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr marker_pub_;
-    tf2_ros::Buffer tf_buffer_;
-    tf2_ros::TransformListener tf_listener_;
-    rclcpp::TimerBase::SharedPtr timer_;
+
+    rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr marker_pub_; ///< Publisher for the marker array.
+    tf2_ros::Buffer tf_buffer_;                                                     ///< TF buffer to store transforms.
+    tf2_ros::TransformListener tf_listener_;                                        ///< TF listener to receive transforms.
+    rclcpp::TimerBase::SharedPtr timer_;                                            ///< Timer to periodically trigger the callback.
 };
 
+/**
+ * @brief Main function to initialize and run the Trace node.
+ *
+ * @param argc Number of command-line arguments.
+ * @param argv Array of command-line arguments.
+ * @return int Exit status.
+ */
 int main(int argc, char *argv[])
 {
     // Initialize the ROS 2 system

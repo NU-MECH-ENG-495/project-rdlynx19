@@ -4,6 +4,9 @@ cmake_minimum_required(VERSION 3.10)
 # Project name and version
 project(coveragePP VERSION 1.0)
 
+# Find Doxygen library
+find_package(Doxygen REQUIRED)
+
 # Set the C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -41,3 +44,12 @@ add_custom_target(clean_all
 # Enable Testing
 enable_testing()
 add_subdirectory(tests)
+
+# Generate Doxygen documentation
+if(${DOXYGEN_FOUND})
+    doxygen_add_docs(doxygen 
+    ${PROJECT_SOURCE_DIR}/include/ 
+    ${PROJECT_SOURCE_DIR}/src/ 
+    ALL
+)
+endif()
