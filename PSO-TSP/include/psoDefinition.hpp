@@ -1,4 +1,6 @@
-#pragma once
+#ifndef PSO_DEFINITION_HPP
+#define PSO_DEFINITION_HPP
+
 #include <iostream>
 #include <vector>
 #include <memory>
@@ -34,3 +36,5 @@ class PSO {
         std::vector<int> getGlobalBestRoute () const {return globalBestRoute; }
         std::vector<std::shared_ptr<Particle>> getParticleList() const {return particleList;}
 };
+
+#endif

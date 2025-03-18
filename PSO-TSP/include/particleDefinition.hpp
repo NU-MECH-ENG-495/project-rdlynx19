@@ -1,7 +1,8 @@
-#pragma once
+#ifndef PARTICLE_DEFINITION_HPP
+#define PARTICLE_DEFINITION_HPP
+
 #include <vector>
 #include <iostream>
-
 
 class Particle {
     private:
@@ -26,4 +27,7 @@ class Particle {
         void setVelocity(std::vector<double> &newVelocity);
         void setBestRoute(std::vector<int> &newBestRoute);
         void setBestFitness(double &newBestFitness);
-        };
+
+    };
+
+#endif
