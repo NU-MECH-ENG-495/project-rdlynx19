@@ -11,20 +11,16 @@ The project is divided into two main components:
 ### Coverage Path Planning
 
 ### Particle Swarm Optimization(PSO) for TSP
+- The algorithm randomly initializes a set of waypoints (cities), with the goal of finding the shortest possible route that visits all cities exactly once and returns to the starting point
+- The velocity update follows the standard PSO equation, while the position update uses the velocity vector to determine the swap index for modifying the route
+- Using 4 particles and 100 iterations, the algorithm converges to a feasible solution, which is then converted into a trajectory and deployed on the Crazyflie
 
-
-
+## References
+- [SwarmBenchmark (Amin Sedaghat)](https://github.com/Aminsed/SwarmBenchmark?tab=readme-ov-file) 
+- [CrazySwarm2 (IMRC Lab)](https://imrclab.github.io/crazyswarm2/)
 
 ## License
-The project is licensed under the MIT License. See the LICENSE file for more details.
+The project is licensed under the MIT License.
 
-
-The main reference comes from a Swarm Benchmark [article](https://medium.com/@amin32846/swarm-intelligence-showdown-a-benchmarking-study-a94cc2ca598c) and [repository](https://github.com/Aminsed/SwarmBenchmark?tab=readme-ov-file) which contains the implementation of these algorithms in C++, OpenMP, CUDA, and Thrust. \
-However, my main idea is to implement these algorithms in a single threaded C++ approach. (possibly implement a few of them in a multi-threading).
-
-The CrazyFlie has a swarming [package](https://imrclab.github.io/crazyswarm2/index.html) available in Python, which would allow me to communicate with the swarm, but position or trajectory of the drones will be determined by the swarming algorithm being implemented. The package also has a simulation environment, which can be used to test the algorithms before deploying them on real drones.
-Additionally, it may require use of positioning systems like Motion Capture, which I am currently using for my winter project. 
-
-My ambitious end goal is to create a clean and well-documented implementation, release it as an open-source repository, as a reference and baseline for studying swarm algorithms and deploying them on micro aerial vehicles.
 
 
