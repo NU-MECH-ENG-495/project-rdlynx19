@@ -32,4 +32,5 @@ class PSO {
 
         std::vector<std::shared_ptr<City>> getCityList() const {return cityList;}
         std::vector<int> getGlobalBestRoute () const {return globalBestRoute; }
+        std::vector<std::shared_ptr<Particle>> getParticleList() const {return particleList;}
 };
