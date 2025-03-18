@@ -1,22 +1,23 @@
-# Project Description
-Title: Swarm Algorithms Implementation on CrazyFlie Drones \
-Author: Pushkar Dave
+# Trajectory Generation for Crazyflie Drones
+Authors: [Pushkar Dave](https://www.pushkardave.com) and [Grayson Snyder](https://www.snydergi.github.io)
 
-The aim of the project is to implement the set of popular swarm algorithms in C++, and then deploy them on a set of [CrazyFlie](https://www.bitcraze.io/products/old-products/crazyflie-2-1/) drones.
+This repository contains the implementation of two distinct algorithms for the [CrazyFlie](https://www.bitcraze.io/products/old-products/crazyflie-2-1/) drones, as a part of the final project for ME495: Advanced Programming Concepts in C++
 
-![crazy-swarm](/images/swarm.jpg)
+The project is divided into two main components:
+1. Coverage Path Planning: Implemented by Grayson Snyder, 
+2. Particle Swarm Optimization(PSO) for Traveling Salesman Problem (TSP): Implemented by Pushkar Dave, this algorithm solves TSP using PSO to generate an optimal route for a Crazyflie to visit a set of waypoints. The [uav-trajectories](https://www.github.com/whoenig/uav_trajectories) package is used to generate a trajectory from the optimal route of waypoints.
 
-Possible algorithms are:
-- Particle Swarm Optimisation (PSO)
-- Firefly Algorithm (FA)
-- Moth-Flame Optimization (MFO) Algorithm
-- Grey Wolf Optimizer (GWO)
-- Whale Optimization Algorithm (WOA)
-- Artificial Bee Colony (ABC) Algorithm
-- Dragonfly Algorithm (DA)
-- Salp Swarm Algorithm (SSA)
-- Grasshopper Optimization Algorithm (GOA)
-- Ant Colony Optimization (ACO)
+## Overview
+### Coverage Path Planning
+
+### Particle Swarm Optimization(PSO) for TSP
+
+
+
+
+## License
+The project is licensed under the MIT License. See the LICENSE file for more details.
+
 
 The main reference comes from a Swarm Benchmark [article](https://medium.com/@amin32846/swarm-intelligence-showdown-a-benchmarking-study-a94cc2ca598c) and [repository](https://github.com/Aminsed/SwarmBenchmark?tab=readme-ov-file) which contains the implementation of these algorithms in C++, OpenMP, CUDA, and Thrust. \
 However, my main idea is to implement these algorithms in a single threaded C++ approach. (possibly implement a few of them in a multi-threading).
