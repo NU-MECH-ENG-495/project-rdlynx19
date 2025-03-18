@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug PSO",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/pso", // Path to your executable
+            "args": [], // Command-line arguments (if any)
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}", // Working directory
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb", // Use 'lldb' for macOS
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "cmake: build", // Build the project before debugging
+            "miDebuggerPath": "/usr/bin/gdb", // Path to GDB (use 'lldb' for macOS)
+            "logging": {
+                "trace": true,
+                "traceResponse": true,
+                "engineLogging": true
+            }
+        }
+    ]
+}
