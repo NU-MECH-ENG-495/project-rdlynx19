@@ -18,3 +18,8 @@ build/
 # Ignore other build artifacts
 *.out
 *.log
+
+# Ignore ros2 build directories
+visualizerPkg/build
+visualizerPkg/install
+visualizerPkg/log
